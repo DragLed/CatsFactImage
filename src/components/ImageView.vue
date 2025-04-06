@@ -5,13 +5,24 @@ import { onMounted } from 'vue';
 
 const imageUrl = ref('');
 const tags = ref(['']);
-const selectedTag = ref('A');
+const selectedTag = ref('');
 
 function GetImage() {
     imageUrl.value = '';
     console.log(selectedTag.value);
-    if (selectedTag ) {
+    if (selectedTag.value != "") {
         axios.get('https://cataas.com/cat/'+ selectedTag.value +'?position=center&json=true')
+  .then(response => {
+    console.log(response.data.url)
+    imageUrl.value = response.data.url;
+
+  })
+  .catch(error => {
+    console.error('Ошибка:', error.message);
+  });
+    }
+    else {
+      axios.get('https://cataas.com/cat?json=true')
   .then(response => {
     console.log(response.data.url)
     imageUrl.value = response.data.url;
